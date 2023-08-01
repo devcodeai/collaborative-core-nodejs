@@ -1,37 +1,31 @@
 {
-    "name": "collaborative-core-nodejs",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "format:check": "npx prettier --check .",
-      "format:write": "npx prettier --write .",
-      "lint:check": "npx eslint .",
-      "lint:fix": "npx eslint --fix .",
-      "precommit": "npm run format:write && npm run lint:check && npm run lint:fix",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/devcodeai/collaborative-core-nodejs.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/devcodeai/collaborative-core-nodejs/issues"
-    },
-    "homepage": "https://github.com/devcodeai/collaborative-core-nodejs#readme",
-    "devDependencies": {
-      "eslint": "^8.46.0",
-      "eslint-config-prettier": "^8.9.0",
-      "eslint-plugin-prettier": "^5.0.0",
-      "husky": "^8.0.3",
-      "prettier": "^3.0.0"
-    },
-    "husky": {
-      "hooks": {
-        "pre-commit": "npm run precommit"
-      }
-    }
+  "name": "collaborative-core-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format:check": "npx prettier --check .",
+    "format:write": "npx prettier --write .",
+    "lint:check": "npx eslint .",
+    "lint:fix": "npx eslint --fix .",
+    "precommit": "npm run format:write && npm run lint:check && npm run lint:fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devcodeai/collaborative-core-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devcodeai/collaborative-core-nodejs/issues"
+  },
+  "homepage": "https://github.com/devcodeai/collaborative-core-nodejs#readme",
+  "devDependencies": {
+    "eslint": "^8.46.0",
+    "eslint-config-prettier": "^8.9.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.0"
+  }
 }
