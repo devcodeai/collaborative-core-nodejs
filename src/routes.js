@@ -14,6 +14,20 @@ import {
   updateMajorById,
   deleteMajorById
 } from './controllers/CampusServices/MajorController.js';
+import {
+  getTalents,
+  getTalentById,
+  createTalent,
+  updateTalentById,
+  deleteTalentById
+} from './controllers/TalentServices/TalentController.js';
+import {
+  getCommunities,
+  getCommunityById,
+  createCommunity,
+  updateCommunityById,
+  deleteCommunityById
+} from './controllers/CommunityServices/CommunityController.js';
 
 const router = new Router();
 router.get('/', async (req, res) => {
@@ -39,8 +53,18 @@ router.post('/majors', createMajorByCampusId);
 router.put('/majors/:id', updateMajorById);
 router.delete('/majors/:id', deleteMajorById);
 // Talent Services
-// TODO HERE
+// > Talent Routes
+router.get('/talents', getTalents);
+router.get('/talents/:id', getTalentById);
+router.post('/talents', createTalent);
+router.put('/talents/:id', updateTalentById);
+router.delete('/talents/:id', deleteTalentById);
 // Community Services
-// TODO HERE
+// > Community Routes
+router.get('/communities', getCommunities);
+router.get('/communities/:id', getCommunityById);
+router.post('/communities', createCommunity);
+router.put('/communities/:id', updateCommunityById);
+router.delete('/communities/:id', deleteCommunityById);
 
 export { router };
