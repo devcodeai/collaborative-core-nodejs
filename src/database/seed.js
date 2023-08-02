@@ -12,7 +12,19 @@ await pool.query(
         (3, 'Company C', '789 Oak St', 'companyc@example.com', '555-3333'),
         (4, 'Company D', '321 Pine St', 'companyd@example.com', '555-4444'),
         (5, 'Company E', '654 Maple St', 'companye@example.com', '555-5555');
-    `
+  `
+);
+
+await pool.query(
+  `
+    INSERT INTO products (name, company_id)
+    VALUES
+        ('Product Sabun', 1),
+        ('Product Shampoo', 1),
+        ('Product Sendok', 2),
+        ('Product Garpu', 2),
+        ('Product Piring', 2);
+  `
 );
 
 console.log('berhasil');
