@@ -3,3 +3,5 @@ dist
 *.md
 .env
 .env.example
+Dockerfile
+docker-compose.yaml
