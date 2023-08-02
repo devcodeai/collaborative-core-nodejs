@@ -6,8 +6,8 @@ import { init, migration } from './database/config.js';
 
 dotenv.config();
 const app = express();
+const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 3030;
-const host = process.env.HOST || 'localhost';
 
 app.use(cors());
 app.use(json());

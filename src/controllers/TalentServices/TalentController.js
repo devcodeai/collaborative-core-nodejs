@@ -6,15 +6,23 @@ export const getTalents = async (_, res) => {
   try {
     const statement = 'SELECT * FROM talents';
     const [rows] = await pool.query(statement);
+    if (rows.length === 0) {
+      res.status(404).json({
+        code: 404,
+        message: 'Talents Not Found'
+      });
+    }
+
     res.status(200).json({
-      status: 200,
-      message: 'Success',
+      code: 200,
+      message: 'Fetch Talents Success',
       data: rows
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: 'Not Found'
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -26,20 +34,21 @@ export const getTalentById = async (req, res) => {
     const [rows] = await pool.execute(statement, [id]);
     if (rows.length === 0) {
       return res.status(404).json({
-        status: 404,
+        code: 404,
         message: `Talent with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      status: 200,
-      message: 'Success',
+      code: 200,
+      message: `Fetch Talent with ID ${id} Success`,
       data: rows[0]
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err.message
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -47,12 +56,20 @@ export const getTalentById = async (req, res) => {
 export const createTalent = async (req, res) => {
   try {
     const { name, email, skills } = req.body;
+    if (!name || !email || !skills) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Bad Request'
+      });
+    }
+
     const statement =
       'INSERT INTO talents (name, email, skills) VALUES (?, ?, ?)';
     const [result] = await pool.execute(statement, [name, email, skills]);
-    res.status(201).json({
-      status: 201,
-      message: 'Success',
+
+    res.status(200).json({
+      code: 200,
+      message: 'Create Talent Success',
       data: {
         id: result.insertId,
         name,
@@ -61,9 +78,10 @@ export const createTalent = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err.message
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -72,31 +90,43 @@ export const updateTalentById = async (req, res) => {
   try {
     const id = req.params.id;
     const { name, email, skills } = req.body;
-    const statement = 'SELECT * FROM talents WHERE id=?';
-    const [rows] = await pool.execute(statement, [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({
-        status: 404,
-        message: `Talent with ID ${id} Not Found`
+    if (!name || !email || !skills) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Bad Request'
       });
     }
 
     const updateStatement =
       'UPDATE talents SET name=?, email=?, skills=? WHERE id=?';
-    await pool.execute(updateStatement, [name, email, skills, id]);
-
-    const selectStatement = 'SELECT * FROM talents WHERE id=?';
-    const [updatedRows] = await pool.execute(selectStatement, [id]);
+    const [updateResult] = await pool.execute(updateStatement, [
+      name,
+      email,
+      skills,
+      id
+    ]);
+    if (updateResult.affectedRows === 0) {
+      return res.status(404).json({
+        code: 404,
+        message: `Talent with ID ${id} Not Found`
+      });
+    }
 
     res.status(200).json({
-      status: 200,
-      message: 'Success',
-      data: updatedRows[0]
+      code: 200,
+      message: `Update Talent with ID ${id} Success`,
+      data: {
+        id: Number(id),
+        name,
+        email,
+        skills
+      }
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err.message
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -104,27 +134,24 @@ export const updateTalentById = async (req, res) => {
 export const deleteTalentById = async (req, res) => {
   try {
     const id = req.params.id;
-    const statement = 'SELECT * FROM talents WHERE id=?';
-    const [rows] = await pool.execute(statement, [id]);
-    if (rows.length === 0) {
+    const deleteStatement = 'DELETE FROM talents WHERE id=?';
+    const [deleteResult] = await pool.execute(deleteStatement, [id]);
+    if (deleteResult.affectedRows === 0) {
       return res.status(404).json({
-        status: 404,
+        code: 404,
         message: `Talent with ID ${id} Not Found`
       });
     }
 
-    const deleteStatement = 'DELETE FROM talents WHERE id=?';
-    await pool.execute(deleteStatement, [id]);
-
     res.status(200).json({
-      status: 200,
-      message: 'Success',
-      data: {}
+      code: 200,
+      message: `Delete Talent with ID ${id} Success`
     });
   } catch (err) {
     res.status(500).json({
-      status: 500,
-      message: err.message
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
