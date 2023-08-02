@@ -5,14 +5,15 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js",
+    "seed": "nodemon ./src/database/seed.js",
     "format:check": "npx prettier --check .",
     "format:write": "npx prettier --write .",
     "lint:check": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "precommit": "npm run format:write && npm run lint:check && npm run lint:fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/index.js",
-    "seed": "nodemon ./src/database/seed.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
