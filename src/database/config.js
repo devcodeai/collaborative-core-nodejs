@@ -7,8 +7,8 @@ export const init = () => {
   try {
     pool = createPool({
       host: process.env.MYSQL_HOST || 'localhost',
-      user: process.env.MYSQL_USER || 'user',
-      database: process.env.MYSQL_DBNAME || 'devoce',
+      user: process.env.MYSQL_USER || 'root',
+      database: process.env.MYSQL_DBNAME || 'devcode',
       password: process.env.MYSQL_PASSWORD || 'password',
       waitForConnections: true,
       connectionLimit: 10,
