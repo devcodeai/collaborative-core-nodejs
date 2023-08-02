@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+build
+.env
+.env.example
+.eslintignore
+.eslintrc.json
+.prettierignore
+.prettierrc.json
+*.md
