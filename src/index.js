@@ -32,8 +32,14 @@ app.use((err, req, res) => {
 const run = async () => {
   init();
   await migration(); // 👈 running migration before server
-  app.listen(port); // running server
-  console.log(`Server run on http://${host}:${port}/`);
+  app.listen(port, (error) => {
+    if (error) {
+      console.log('Error occured!');
+      console.log(`Error: ${error}`);
+    } else {
+      console.log(`Server run on http://${host}:${port}/`);
+    }
+  }); // running server
 };
 
 run();
