@@ -53,7 +53,32 @@
       ```
 
 * Using Docker 
-    * _TODO HERE_
+    * Build the Backend API Service docker image. If you don't specify the `<tag>`, it will be tagged as `latest` by default
+
+      ```
+      docker build -t <image_name>:<tag> .
+      ```
+  * Configure `docker-compose.yaml`, adjust the script below according to your built docker image
+
+    ```
+    ...
+    backend-api-service: 
+      image: <image_name>:<tag>
+      restart: always
+      ports:
+        - 3031:3030
+    ...
+    ```
+  * Run `docker-compose.yaml` file, it may take a few minutes and re-attempts. It works fine, solely wait for the `Server run on http://0.0.0.0:3030` comes out
+
+    ```
+    docker-compose -f docker-compose.yaml up
+    ```
+  * Open the path on your local machine
+      
+    ```
+    http://localhost:3031/api/
+    ```
 
 ## Unit Testing
 * _TODO HERE_
