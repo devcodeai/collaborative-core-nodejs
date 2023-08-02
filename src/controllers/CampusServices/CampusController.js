@@ -2,7 +2,7 @@ import { pool } from '../../database/config.js';
 
 // campuses: id, university_name, location, website
 
-const getCampuses = async (req, res) => {
+export const getCampuses = async (_, res) => {
   try {
     const statement = 'SELECT * FROM campuses';
     const [rows] = await pool.query(statement);
@@ -19,7 +19,7 @@ const getCampuses = async (req, res) => {
   }
 };
 
-const getCampusById = async (req, res) => {
+export const getCampusById = async (req, res) => {
   try {
     const id = req.params.id;
     const statement = 'SELECT * FROM campuses WHERE id=?';
@@ -44,7 +44,7 @@ const getCampusById = async (req, res) => {
   }
 };
 
-const createCampus = async (req, res) => {
+export const createCampus = async (req, res) => {
   try {
     const { university_name, location, website } = req.body;
     const statement =
@@ -57,7 +57,12 @@ const createCampus = async (req, res) => {
     res.status(201).json({
       status: 201,
       message: 'Success',
-      data: result
+      data: {
+        id: result.insertId,
+        university_name,
+        location,
+        website
+      }
     });
   } catch (err) {
     res.status(400).json({
@@ -67,7 +72,7 @@ const createCampus = async (req, res) => {
   }
 };
 
-const updateCampusById = async (req, res) => {
+export const updateCampusById = async (req, res) => {
   try {
     const id = req.params.id;
     const { university_name, location, website } = req.body;
@@ -105,7 +110,7 @@ const updateCampusById = async (req, res) => {
   }
 };
 
-const deleteCampusById = async (req, res) => {
+export const deleteCampusById = async (req, res) => {
   try {
     const id = req.params.id;
     const statement = 'SELECT * FROM campuses WHERE id=?';
@@ -126,17 +131,9 @@ const deleteCampusById = async (req, res) => {
       data: {}
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
+    res.status(500).json({
+      status: 500,
       message: err.message
     });
   }
-};
-
-module.exports = {
-  getCampuses,
-  getCampusById,
-  createCampus,
-  updateCampusById,
-  deleteCampusById
 };
