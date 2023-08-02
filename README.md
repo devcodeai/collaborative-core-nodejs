@@ -30,9 +30,28 @@
 * nodemon `Dev`
 * prettier `Dev`
 
-## Run Program (on local/on docker)
+## Run Program
 * Using Local Machine (Windows)
-    * _TODO HERE_
+    * Create new database (on MYSQL) as `<database_name>`
+    * Copy `.env.example` to `env` 
+      * Update `MYSQL_DBNAME` configuration as `<database_name>`
+      * Update `MYSQL_PASSWORD` configuration as `<your_mysql_password>`
+    * Install all the package dependencies
+      
+      ```
+      npm install
+      ```
+    * Start the program
+      
+      ```
+      npm start
+      ```
+    * Open the path on your local machine
+      
+      ```
+      http://localhost:3030/api/
+      ```
+
 * Using Docker 
     * _TODO HERE_
 
@@ -44,10 +63,12 @@
 
 ## Development Guide
 * Run the program
+
     ```
     npm run dev
     ```
 * Do pre-commit action before bring out your code to the repository
+    
     ```
     npm run precommit
     ```

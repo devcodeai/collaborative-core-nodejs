@@ -37,7 +37,7 @@ const run = async () => {
       console.log('Error occured!');
       console.log(`Error: ${error}`);
     } else {
-      console.log(`Server run on http://${host}:${port}/`);
+      console.log(`Server run on http://${host}:${port}/api`);
     }
   }); // running server
 };
