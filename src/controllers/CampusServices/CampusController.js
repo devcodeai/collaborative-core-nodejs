@@ -6,15 +6,23 @@ export const getCampuses = async (_, res) => {
   try {
     const statement = 'SELECT * FROM campuses';
     const [rows] = await pool.query(statement);
+    if (rows.length === 0) {
+      res.status(404).json({
+        code: 404,
+        message: 'Campuses Not Found'
+      });
+    }
+
     res.status(200).json({
-      status: 200,
-      message: 'Success',
+      code: 200,
+      message: 'Fetch Campuses Success',
       data: rows
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: 'Not Found'
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -26,20 +34,21 @@ export const getCampusById = async (req, res) => {
     const [rows] = await pool.execute(statement, [id]);
     if (rows.length === 0) {
       return res.status(404).json({
-        status: 404,
+        code: 404,
         message: `Campus with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      status: 200,
-      message: 'Success',
+      code: 200,
+      message: `Fetch Campus with ID ${id} Success`,
       data: rows[0]
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err.message
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -47,6 +56,13 @@ export const getCampusById = async (req, res) => {
 export const createCampus = async (req, res) => {
   try {
     const { university_name, location, website } = req.body;
+    if (!university_name || !location || !website) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Bad Request'
+      });
+    }
+
     const statement =
       'INSERT INTO campuses (university_name, location, website) VALUES (?, ?, ?)';
     const [result] = await pool.execute(statement, [
@@ -54,9 +70,10 @@ export const createCampus = async (req, res) => {
       location,
       website
     ]);
-    res.status(201).json({
-      status: 201,
-      message: 'Success',
+
+    res.status(200).json({
+      code: 200,
+      message: 'Create Campus Success',
       data: {
         id: result.insertId,
         university_name,
@@ -65,9 +82,10 @@ export const createCampus = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err.message
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -76,36 +94,43 @@ export const updateCampusById = async (req, res) => {
   try {
     const id = req.params.id;
     const { university_name, location, website } = req.body;
-    const statement = 'SELECT * FROM campuses WHERE id=?';
-    const [rows] = await pool.execute(statement, [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({
-        status: 404,
-        message: `Campus with ID ${id} Not Found`
+    if (!university_name || !location || !website) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Bad Request'
       });
     }
 
     const updateStatement =
       'UPDATE campuses SET university_name=?, location=?, website=? WHERE id=?';
-    await pool.execute(updateStatement, [
+    const [updateResult] = await pool.execute(updateStatement, [
       university_name,
       location,
       website,
       id
     ]);
-
-    const selectStatement = 'SELECT * FROM campuses WHERE id=?';
-    const [updatedRows] = await pool.execute(selectStatement, [id]);
+    if (updateResult.affectedRows === 0) {
+      return res.status(404).json({
+        code: 404,
+        message: `Campus with ID ${id} Not Found`
+      });
+    }
 
     res.status(200).json({
-      status: 200,
-      message: 'Success',
-      data: updatedRows[0]
+      code: 200,
+      message: `Update Campus with ID ${id} Success`,
+      data: {
+        id: Number(id),
+        university_name,
+        location,
+        website
+      }
     });
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err.message
+    res.status(500).json({
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
@@ -113,27 +138,24 @@ export const updateCampusById = async (req, res) => {
 export const deleteCampusById = async (req, res) => {
   try {
     const id = req.params.id;
-    const statement = 'SELECT * FROM campuses WHERE id=?';
-    const [rows] = await pool.execute(statement, [id]);
-    if (rows.length === 0) {
+    const deleteStatement = 'DELETE FROM campuses WHERE id=?';
+    const [deleteResult] = await pool.execute(deleteStatement, [id]);
+    if (deleteResult.affectedRows === 0) {
       return res.status(404).json({
-        status: 404,
+        code: 404,
         message: `Campus with ID ${id} Not Found`
       });
     }
 
-    const deleteStatement = 'DELETE FROM campuses WHERE id=?';
-    await pool.execute(deleteStatement, [id]);
-
     res.status(200).json({
-      status: 200,
-      message: 'Success',
-      data: {}
+      code: 200,
+      message: `Delete Campus with ID ${id} Success`
     });
   } catch (err) {
     res.status(500).json({
-      status: 500,
-      message: err.message
+      code: 500,
+      message: 'Internal Server Error',
+      error: err.message
     });
   }
 };
