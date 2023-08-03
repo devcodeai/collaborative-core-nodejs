@@ -8,19 +8,19 @@ export const getTalents = async (_, res) => {
     const [rows] = await pool.query(statement);
     if (rows.length === 0) {
       res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: 'Talents Not Found'
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: 'Fetch Talents Success',
       data: rows
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -34,19 +34,19 @@ export const getTalentById = async (req, res) => {
     const [rows] = await pool.execute(statement, [id]);
     if (rows.length === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Talent with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Fetch Talent with ID ${id} Success`,
       data: rows[0]
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -58,7 +58,7 @@ export const createTalent = async (req, res) => {
     const { name, email, skills } = req.body;
     if (!name || !email || !skills) {
       return res.status(400).json({
-        code: 400,
+        status: 'Failed',
         message: 'Bad Request'
       });
     }
@@ -68,7 +68,7 @@ export const createTalent = async (req, res) => {
     const [result] = await pool.execute(statement, [name, email, skills]);
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: 'Create Talent Success',
       data: {
         id: result.insertId,
@@ -79,7 +79,7 @@ export const createTalent = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -92,7 +92,7 @@ export const updateTalentById = async (req, res) => {
     const { name, email, skills } = req.body;
     if (!name || !email || !skills) {
       return res.status(400).json({
-        code: 400,
+        status: 'Failed',
         message: 'Bad Request'
       });
     }
@@ -107,13 +107,13 @@ export const updateTalentById = async (req, res) => {
     ]);
     if (updateResult.affectedRows === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Talent with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Update Talent with ID ${id} Success`,
       data: {
         id: Number(id),
@@ -124,7 +124,7 @@ export const updateTalentById = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -138,18 +138,19 @@ export const deleteTalentById = async (req, res) => {
     const [deleteResult] = await pool.execute(deleteStatement, [id]);
     if (deleteResult.affectedRows === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Talent with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
-      message: `Delete Talent with ID ${id} Success`
+      status: 'Success',
+      message: `Delete Talent with ID ${id} Success`,
+      data: {}
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
