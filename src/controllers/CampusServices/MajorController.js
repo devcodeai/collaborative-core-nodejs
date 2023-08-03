@@ -9,19 +9,19 @@ export const getMajorsByCampusId = async (req, res) => {
     const [rows] = await pool.execute(statement, [campus_id]);
     if (rows.length === 0) {
       res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Majors with Campus ID ${campus_id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Fetch Majors with Campus ID ${campus_id} Success`,
       data: rows
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -35,19 +35,19 @@ export const getMajorById = async (req, res) => {
     const [rows] = await pool.execute(statement, [id]);
     if (rows.length === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Major with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Fetch Major with ID ${id} Success`,
       data: rows[0]
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -59,7 +59,7 @@ export const createMajorByCampusId = async (req, res) => {
     const { name, campus_id } = req.body;
     if (!name || !campus_id) {
       return res.status(400).json({
-        code: 400,
+        status: 'Failed',
         message: 'Bad Request'
       });
     }
@@ -68,7 +68,7 @@ export const createMajorByCampusId = async (req, res) => {
     const [campusRows] = await pool.execute(findCampusStatement, [campus_id]);
     if (campusRows.length === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Create Major Failed, Campus with ID ${campus_id} Not Found`
       });
     }
@@ -77,7 +77,7 @@ export const createMajorByCampusId = async (req, res) => {
     const [result] = await pool.execute(statement, [name, campus_id]);
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: 'Create Major Success',
       data: {
         id: result.insertId,
@@ -87,7 +87,7 @@ export const createMajorByCampusId = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -100,7 +100,7 @@ export const updateMajorById = async (req, res) => {
     const { name, campus_id } = req.body;
     if (!name || !campus_id) {
       return res.status(400).json({
-        code: 400,
+        status: 'Failed',
         message: 'Bad Request'
       });
     }
@@ -109,7 +109,7 @@ export const updateMajorById = async (req, res) => {
     const [campusRows] = await pool.execute(findCampusStatement, [campus_id]);
     if (campusRows.length === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Update Major Failed, Campus with ID ${campus_id} Not Found`
       });
     }
@@ -122,13 +122,13 @@ export const updateMajorById = async (req, res) => {
     ]);
     if (updateResult.affectedRows === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Major with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Update Major with ID ${id} Success`,
       data: {
         id: Number(id),
@@ -138,7 +138,7 @@ export const updateMajorById = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -152,18 +152,19 @@ export const deleteMajorById = async (req, res) => {
     const [deleteResult] = await pool.execute(deleteStatement, [id]);
     if (deleteResult.affectedRows === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Major with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
-      message: `Delete Major with ID ${id} Success`
+      status: 'Success',
+      message: `Delete Major with ID ${id} Success`,
+      data: {}
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });

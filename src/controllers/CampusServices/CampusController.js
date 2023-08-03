@@ -8,19 +8,19 @@ export const getCampuses = async (_, res) => {
     const [rows] = await pool.query(statement);
     if (rows.length === 0) {
       res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: 'Campuses Not Found'
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: 'Fetch Campuses Success',
       data: rows
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -34,19 +34,19 @@ export const getCampusById = async (req, res) => {
     const [rows] = await pool.execute(statement, [id]);
     if (rows.length === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Campus with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Fetch Campus with ID ${id} Success`,
       data: rows[0]
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -58,7 +58,7 @@ export const createCampus = async (req, res) => {
     const { university_name, location, website } = req.body;
     if (!university_name || !location || !website) {
       return res.status(400).json({
-        code: 400,
+        status: 'Failed',
         message: 'Bad Request'
       });
     }
@@ -72,7 +72,7 @@ export const createCampus = async (req, res) => {
     ]);
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: 'Create Campus Success',
       data: {
         id: result.insertId,
@@ -83,7 +83,7 @@ export const createCampus = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -96,7 +96,7 @@ export const updateCampusById = async (req, res) => {
     const { university_name, location, website } = req.body;
     if (!university_name || !location || !website) {
       return res.status(400).json({
-        code: 400,
+        status: 'Failed',
         message: 'Bad Request'
       });
     }
@@ -111,13 +111,13 @@ export const updateCampusById = async (req, res) => {
     ]);
     if (updateResult.affectedRows === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Campus with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
+      status: 'Success',
       message: `Update Campus with ID ${id} Success`,
       data: {
         id: Number(id),
@@ -128,7 +128,7 @@ export const updateCampusById = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
@@ -142,18 +142,19 @@ export const deleteCampusById = async (req, res) => {
     const [deleteResult] = await pool.execute(deleteStatement, [id]);
     if (deleteResult.affectedRows === 0) {
       return res.status(404).json({
-        code: 404,
+        status: 'Not Found',
         message: `Campus with ID ${id} Not Found`
       });
     }
 
     res.status(200).json({
-      code: 200,
-      message: `Delete Campus with ID ${id} Success`
+      status: 'Success',
+      message: `Delete Campus with ID ${id} Success`,
+      data: {}
     });
   } catch (err) {
     res.status(500).json({
-      code: 500,
+      status: 'Failed',
       message: 'Internal Server Error',
       error: err.message
     });
