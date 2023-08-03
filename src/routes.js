@@ -46,7 +46,7 @@ const router = new Router();
 router.get('/', async (req, res) => {
   console.log('Welcome to the Collaborative Core API (NodeJS)!');
   res.status(200).json({
-    status: 200,
+    status: 'Success',
     message: 'Welcome to the Collaborative Core API (NodeJS)!'
   });
 });
