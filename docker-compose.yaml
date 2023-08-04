@@ -8,7 +8,7 @@ services:
       - MYSQL_DATABASE=devcode
       - MYSQL_ROOT_PASSWORD=password
     volumes:
-      - mysql-db:/var/lib/mysql
+      - nodejs-mysql-db:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 15s
@@ -22,5 +22,5 @@ services:
       mysql:
         condition: service_healthy
 volumes:
-  mysql-db:
+  nodejs-mysql-db:
     driver: local
