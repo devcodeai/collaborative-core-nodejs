@@ -3,12 +3,14 @@ import express, { json } from 'express';
 import cors from 'cors';
 import { router } from './routes.js';
 import { init, migration } from './database/config.js';
+import morgan from 'morgan';
 
 dotenv.config();
 const app = express();
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 3030;
 
+app.use(morgan('dev'));
 app.use(cors());
 app.use(json());
 app.use('/api', router);

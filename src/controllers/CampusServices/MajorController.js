@@ -8,7 +8,7 @@ export const getMajorsByCampusId = async (req, res) => {
     const statement = 'SELECT * FROM majors WHERE campus_id=?';
     const [rows] = await pool.execute(statement, [campus_id]);
     if (rows.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         status: 'Not Found',
         message: `Majors with Campus ID ${campus_id} Not Found`
       });
