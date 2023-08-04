@@ -17,7 +17,7 @@ RUN mkdir -p /app
 # copy all dirs/files (in local machine) to '/app' dir (in container)
 COPY . /app
 
-# set default current dir as '/app'
+# set default working dir as '/app'
 WORKDIR /app
 
 # execute npm install in '/app' dir
