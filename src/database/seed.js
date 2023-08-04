@@ -83,8 +83,7 @@ try {
     `
   );
 
-  console.log('Seeding Successful!')
-
+  console.log('Seeding Successful!');
 } catch (error) {
   console.error('[Error]: ', error);
   throw new Error('Fail to seed database!');
