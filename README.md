@@ -32,32 +32,33 @@
 
 ## Run Program
 * Using Local Machine (Windows)
-    * Create new database (on MYSQL) as `<database_name>`
-    * Copy `.env.example` to `env` 
-      * Update `MYSQL_DBNAME` configuration as `<database_name>`
-      * Update `MYSQL_PASSWORD` configuration as `<your_mysql_password>`
-    * Install all the package dependencies
-      
-      ```
-      npm install
-      ```
-    * Start the program
-      
-      ```
-      npm start
-      ```
-    * Open the path on your local machine
-      
-      ```
-      http://localhost:3030/api/
-      ```
+  * Create new database (on MYSQL) as `<database_name>`
+  * Copy `.env.example` to `.env` 
+    * Update `MYSQL_DBNAME` configuration as `<database_name>`
+    * Update `MYSQL_PASSWORD` configuration as `<your_mysql_password>`
+  * Install all the package dependencies
+    
+    ```
+    npm install
+    ```
+  * Start the program
+    
+    ```
+    npm start
+    ```
+  * Open the path on your local machine
+    
+    ```
+    http://localhost:3030/api/
+    ```
 
 * Using Docker 
-    * Build the Backend API Service docker image. If you don't specify the `<tag>`, it will be tagged as `latest` by default
+  * Copy `.env.example` to `.env` 
+  * Build the Backend API Service docker image. If you don't specify the `<tag>`, it will be tagged as `latest` by default
 
-      ```
-      docker build -t <image_name>:<tag> .
-      ```
+    ```
+    docker build -t <image_name>:<tag> .
+    ```
   * Configure `docker-compose.yaml`, adjust the script below according to your built docker image
 
     ```
