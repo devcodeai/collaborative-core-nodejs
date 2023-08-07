@@ -17,7 +17,7 @@ services:
     image: collaborative-core-nodejs:2.1
     restart: always
     ports:
-      - 3031:3030
+      - 8080:3030
     depends_on:
       mysql:
         condition: service_healthy

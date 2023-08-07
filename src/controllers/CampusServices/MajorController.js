@@ -1,10 +1,21 @@
+import NodeCache from 'node-cache';
 import { pool } from '../../database/config.js';
 
-// majors: id, name, campus_id
+const myCache = new NodeCache();
 
 export const getMajorsByCampusId = async (req, res) => {
   try {
     const campus_id = req.query.campus_id;
+
+    const cachedData = myCache.get(`major-${campus_id}`);
+    if (cachedData) {
+      return res.status(200).json({
+        status: 'Success',
+        message: `Fetch Major with ID ${campus_id} Success`,
+        data: cachedData
+      });
+    }
+
     const statement = 'SELECT * FROM majors WHERE campus_id=?';
     const [rows] = await pool.execute(statement, [campus_id]);
     if (rows.length === 0) {
@@ -14,6 +25,8 @@ export const getMajorsByCampusId = async (req, res) => {
       });
     }
 
+    // set cache for 10 minutes
+    myCache.set(`major-${campus_id}`, rows[0], 60 * 10);
     res.status(200).json({
       status: 'Success',
       message: `Fetch Majors with Campus ID ${campus_id} Success`,

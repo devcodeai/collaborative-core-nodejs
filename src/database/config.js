@@ -11,7 +11,7 @@ export const init = () => {
       database: process.env.MYSQL_DBNAME || 'devcode',
       password: process.env.MYSQL_PASSWORD || 'password',
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: 100,
       queueLimit: 0
     });
 
