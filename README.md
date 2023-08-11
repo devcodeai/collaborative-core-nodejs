@@ -71,7 +71,7 @@
       image: <image_name>:<tag>
       restart: always
       ports:
-        - 3031:3030
+        - 8080:3030
     ...
     ```
   * Run `docker-compose.yaml` file, it may take a few minutes and re-attempts. It works fine, solely wait for the `Server run on http://0.0.0.0:3030` comes out
@@ -82,7 +82,7 @@
   * Open the path on your local machine
       
     ```
-    http://localhost:3031/api/
+    http://localhost:8080/api/
     ```
 
 ## Unit Testing
